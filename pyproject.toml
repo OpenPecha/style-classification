@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "project_name"
+name = "style-classification"
 version = "0.0.1"
 authors = [
   { name="OpenPecha", email="dev@openpecha.org" },
 ]
-description = "A small example package"
+description = "The style classification of Tibetan text is done to create training data to develop a style detection model that accurately identifies and categorises different written and printed styles such as Uchen, Umê, Chuyig, and Drutsa, based on their distinct visual characteristics."
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
