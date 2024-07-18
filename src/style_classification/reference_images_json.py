@@ -31,7 +31,7 @@ def main():
 
     json_data = upload_files_to_s3(local_folder, bucket_name, folder_name)
 
-    json_file_path = '../../data/json/reference_images.json'
+    json_file_path = '../../data/json/reference_images/reference_images.json'
     save_json_file(json_data, json_file_path)
 
 if __name__ == "__main__":

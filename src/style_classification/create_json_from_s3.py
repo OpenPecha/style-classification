@@ -2,6 +2,7 @@ import random
 import json
 from config import get_s3_client
 
+
 def get_image_urls(bucket_name, prefix):
     s3 = get_s3_client()
     image_urls = {}
@@ -34,6 +35,7 @@ def get_image_urls(bucket_name, prefix):
 
     return image_urls
 
+
 def select_random_images(image_urls):
     selected_images = {}
     for work_id, urls in image_urls.items():
@@ -41,35 +43,50 @@ def select_random_images(image_urls):
         selected_images[work_id] = urls[:3]
     return selected_images
 
-def save_json_data(selected_images, file_path):
+
+def save_json_data(selected_images, file_paths):
     json_data = []
     for urls in selected_images.values():
         json_data.extend(urls)
 
-    midpoint = len(json_data) // 2
-    json_data_1 = json_data[:midpoint]
-    json_data_2 = json_data[midpoint:]
+    total_items = len(json_data)
+    half_size = total_items // 2
+    remainder = total_items % 2
+    start_idx = 0
+    image_counts = []
+    for i in range(2):
+        end_idx = start_idx + half_size
+        if remainder > 0:
+            end_idx += 1
+            remainder -= 1
 
-    with open(file_path[0], 'w') as json_file_1:
-        json.dump(json_data_1, json_file_1, indent=2)
-    print(f'json saved at: {file_path[0]}')
+        batch_data = json_data[start_idx:end_idx]
+        image_counts.append(len(batch_data))
+        with open(file_paths[i], 'w') as json_file:
+            json.dump(batch_data, json_file, indent=2)
+        print(f'JSON saved at: {file_paths[i]}')
 
-    with open(file_path[1], 'w') as json_file_2:
-        json.dump(json_data_2, json_file_2, indent=2)
-    print(f'json saved at: {file_path[1]}')
+        start_idx = end_idx
+
+    return image_counts
+
 
 def main():
     bucket_name = 'monlam.ai.ocr'
-    prefix = 'Style_classification/works/manuscript_works/'
+    prefix = 'Style_classification/works/woodblock_works/'
 
     image_urls = get_image_urls(bucket_name, prefix)
     selected_images = select_random_images(image_urls)
     selected_image_count = sum(len(urls) for urls in selected_images.values())
     print(f'total images: {selected_image_count}')
 
-    file_path_1 = '../../data/json/manuscript_sample_images_batch1.json'
-    file_path_2 = '../../data/json/manuscript_sample_images_batch2.json'
-    save_json_data(selected_images, [file_path_1, file_path_2])
+    file_path_1 = '../../data/json/woodblock/woodblock_sample_images_batch1.json'
+    file_path_2 = '../../data/json/woodblock/woodblock_sample_images_batch2.json'
+    image_counts = save_json_data(selected_images, [file_path_1, file_path_2])
+
+    for i, count in enumerate(image_counts, start=1):
+        print(f'Batch {i}: {count} images')
+
 
 if __name__ == "__main__":
     main()
