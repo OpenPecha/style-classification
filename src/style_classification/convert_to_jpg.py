@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from config import get_s3_client
 
 BUCKET_NAME = 'monlam.ai.ocr'
-DIRECTORY_PREFIX = 'Style_classification/works/manuscript_works/'
+DIRECTORY_PREFIX = 'Style_classification/works/woodblock_works/'
 OUTPUT_FORMAT = 'JPEG'
 EXCLUDE_EXTENSIONS = ['.jpg', '.jpeg', '.png']
 JPEG_EXTENSION = '.jpg'
