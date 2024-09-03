@@ -3,7 +3,7 @@ from PIL import Image
 import io
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from s3_config import get_s3_client
+from config import get_s3_client
 
 BUCKET_NAME = 'monlam.ai.ocr'
 DIRECTORY_PREFIX = 'Style_classification/works/manuscript_works/'

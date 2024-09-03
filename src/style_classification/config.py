@@ -4,7 +4,7 @@ import boto3
 
 def get_aws_credentials():
     # Path to your custom CSV file
-    aws_credentials_file = os.path.expanduser("~/.aws/credentials")
+    aws_credentials_file = os.path.join(os.getenv('HOME'), '.aws_tk', 'credential', 'tenkal_accessKeys.csv')
     aws_access_key_id = ''
     aws_secret_access_key = ''
 
