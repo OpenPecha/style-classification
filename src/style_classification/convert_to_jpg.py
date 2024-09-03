@@ -3,15 +3,16 @@ from PIL import Image
 import io
 import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from s3_config import get_s3_client
 
 BUCKET_NAME = 'monlam.ai.ocr'
 DIRECTORY_PREFIX = 'Style_classification/works/manuscript_works/'
 OUTPUT_FORMAT = 'JPEG'
 EXCLUDE_EXTENSIONS = ['.jpg', '.jpeg', '.png']
 JPEG_EXTENSION = '.jpg'
-MAX_WORKERS = 10  # Number of concurrent workers
+MAX_WORKERS = 10 
 
-s3_client = boto3.client('s3')
+s3_client = get_s3_client()
 
 def list_directories(bucket, prefix):
     """List directories within a given prefix in an S3 bucket."""
@@ -86,6 +87,7 @@ def main():
     if not image_keys:
         print("No images to convert.")
         return
+
 
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
         futures = [executor.submit(process_image, BUCKET_NAME, key) for key in image_keys]
